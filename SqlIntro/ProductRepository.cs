@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,11 +12,11 @@ namespace SqlIntro
 {
     public class ProductRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnection _conn;
 
-        public ProductRepository(string connectionString)
+        public ProductRepository(IDbConnection conn)
         {
-            _connectionString = connectionString;
+            _conn = conn;
         }
         /// <summary>
         /// Reads all the products from the products table
@@ -23,11 +24,11 @@ namespace SqlIntro
         /// <returns></returns>
         public IEnumerable<Product> GetProducts()
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "SELECT * FROM product";
+                cmd.CommandText = "SELECT Name FROM product";
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
@@ -42,10 +43,12 @@ namespace SqlIntro
         /// <param name="id"></param>
         public void DeleteProduct(int id)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = ""; //Write a delete statement that deletes by id
+                conn.Open();
+                cmd.CommandText = "DELETE FROM product WHERE productid = @id";  
+                //cmd.Parameters.AddWithValue("@id", id); // AddParamWithValue?
                 cmd.ExecuteNonQuery();
             }
         }
@@ -57,12 +60,12 @@ namespace SqlIntro
         {
             //This is annoying and unnecessarily tedious for large objects.
             //More on this in the future...  Nothing to do here..
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "update product set name = @name where id = @id";
-                cmd.Parameters.AddWithValue("@name", prod.Name);
-                cmd.Parameters.AddWithValue("@id", prod.Id);
+              //  cmd.Parameters.AddWithValue("@name", prod.Name);
+              //  cmd.Parameters.AddWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -72,11 +75,11 @@ namespace SqlIntro
         /// <param name="prod"></param>
         public void InsertProduct(Product prod)
         {
-            using (var conn = new MySqlConnection(_connectionString))
+            using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT into product (name) values(@name)";
-                cmd.Parameters.AddWithValue("@name", prod.Name);
+              //  cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
             }
         }
