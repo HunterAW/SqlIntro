@@ -29,11 +29,16 @@ namespace SqlIntro
                 var cmd = conn.CreateCommand();
                 conn.Open();
                 cmd.CommandText = "SELECT Name FROM product";
+
                 var dr = cmd.ExecuteReader();
+
+                var products = new List<Product>();
+
                 while (dr.Read())
                 {
-                    yield return new Product { Name = dr["Name"].ToString() };
+                    products.Add(new Product { Name = dr["Name"].ToString() }); // TODO Can compress this into one line with yield
                 }
+                return products;
             }
         }
 
@@ -47,8 +52,8 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "DELETE FROM product WHERE productid = @id";  
-                //cmd.Parameters.AddWithValue("@id", id); // AddParamWithValue?
+                cmd.CommandText = "DELETE FROM Product WHERE productid = @id";  
+                cmd.AddParamWithValue("@id", id); // AddParamWithValue?
                 cmd.ExecuteNonQuery();
             }
         }
@@ -64,8 +69,8 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "update product set name = @name where id = @id";
-              //  cmd.Parameters.AddWithValue("@name", prod.Name);
-              //  cmd.Parameters.AddWithValue("@id", prod.Id);
+                cmd.AddParamWithValue("@name", prod.Name);
+                cmd.AddParamWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -79,7 +84,7 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "INSERT into product (name) values(@name)";
-              //  cmd.Parameters.AddWithValue("@name", prod.Name);
+                cmd.AddParamWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
             }
         }
