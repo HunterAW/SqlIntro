@@ -28,10 +28,9 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "SELECT Name FROM product";
+                cmd.CommandText = "SELECT Name, ProductID FROM product";
 
                 var dr = cmd.ExecuteReader();
-
                 var products = new List<Product>();
 
                 while (dr.Read())
@@ -41,7 +40,6 @@ namespace SqlIntro
                 return products;
             }
         }
-
         /// <summary>
         /// Deletes a Product from the database
         /// </summary>
@@ -52,7 +50,7 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "DELETE FROM Product WHERE productid = @id";  
+                cmd.CommandText = "DELETE FROM Product WHERE productid = @id";
                 cmd.AddParamWithValue("@id", id); // AddParamWithValue?
                 cmd.ExecuteNonQuery();
             }

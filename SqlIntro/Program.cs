@@ -13,17 +13,14 @@ namespace SqlIntro
 
             var repo = new ProductRepository(connection);
 
-            
-            
             var quit = false;
-            //ProductRepository acctions = new ProductRepository();
 
-            while(!quit)
+            while (!quit)
             {
                 Console.WriteLine("ShowAll, Delete, Update, Insert, Quit");
                 var Userinput = Console.ReadLine().ToLower();
 
-                if(Userinput == "quit")
+                if (Userinput == "quit")
                 {
                     quit = true;
                 }
@@ -34,19 +31,19 @@ namespace SqlIntro
                     {
                         Console.WriteLine("Product Name:" + prod.Name);
                     }
-                    Console.WriteLine("");
+                    Console.WriteLine();
                 }
 
                 if (Userinput == "delete")
                 {
                     Console.WriteLine("Enter Product ID to DELETE.");
                     var id = Convert.ToInt32(Console.ReadLine());
-                    
                     repo.DeleteProduct(id);
 
                     Console.WriteLine($"Deleted Product with ID {id}");
+                    Console.WriteLine();
                 }
-            
+
                 if (Userinput == "update")
                 {
                     Console.WriteLine("Enter Product ID to UPDATE.");
@@ -58,11 +55,9 @@ namespace SqlIntro
                 {
                     Console.WriteLine("Enter Product ID to DELETE.");
                     var name = Console.ReadLine();
-                   // acctions.UpdateProduct(name);
+                    // acctions.UpdateProduct(name);
                 }
-           }
+            }
         }
-
-
     }
 }
