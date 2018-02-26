@@ -13,7 +13,7 @@ namespace SqlIntro
         {
             _conn = conn;
         }
-            
+
         public IEnumerable<Product> GetProducts()
         {
             using (var conn = _conn)
@@ -23,40 +23,41 @@ namespace SqlIntro
 
             }
         }
-    }
 
-    public void DeleteProduct(int id)
-    {
-        using (var conn = _conn)
+        public void DeleteProduct(int id)
         {
-            conn.Open();
-            conn.Exicute("DELETE FROM Product WHERE ProductId = @id", new { id });
-        }
-    }
-
-    public void UpdateProduct(Product prod)
-    {
-
-        using (var conn = _conn)
-        {
-            conn.Open();
-            conn.Exicute("update product set name = @name where id = @id", new
+            using (var conn = _conn)
             {
-                id = prod.Id, name = prod.Name
-            });
-
+                conn.Open();
+                conn.Execute("DELETE FROM Product WHERE ProductId = @id", new { id });
+            }
         }
-    }
 
-    public void InsertProduct(Product prod)
-    {
-        using (var conn = _conn)
+        public void UpdateProduct(Product prod)
         {
-            conn.Open();
-            conn.Exicute("INSERT INTO Product (Name) values(@name)", new
+
+            using (var conn = _conn)
             {
-                name = prod.Name
-            });
+                conn.Open();
+                conn.Execute("update product set name = @name where id = @id", new
+                {
+                    id = prod.Id,
+                    name = prod.Name
+                });
+
+            }
+        }
+
+        public void InsertProduct(Product prod)
+        {
+            using (var conn = _conn)
+            {
+                conn.Open();
+                conn.Execute("INSERT INTO Product (Name) values(@name)", new
+                {
+                    name = prod.Name
+                });
+            }
         }
     }
 }

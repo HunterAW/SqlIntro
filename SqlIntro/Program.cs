@@ -32,7 +32,7 @@ namespace SqlIntro
                 {
                     foreach (var prod in repo.GetProducts())
                     {
-                        Console.WriteLine("Product Name:" + prod.Name + prod.Id);
+                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.Id);
                     }
                     Console.WriteLine();
                 }
