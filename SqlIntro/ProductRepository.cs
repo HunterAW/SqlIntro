@@ -36,9 +36,12 @@ namespace SqlIntro
 
                 while (dr.Read())
                 {
-                    products.Add(new Product { Name = dr["Name"].ToString() }); // TODO Can compress this into one line with yield
+                    yield return new Product
+                    {
+                        Name = dr["Name"].ToString(),
+                        Id = int.Parse(dr["ProductId"].ToString())
+                    };
                 }
-                return products;
             }
         }
         /// <summary>
@@ -51,8 +54,8 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "DELETE FROM Product WHERE productid = @id";
-                cmd.AddParamWithValue("@id", id); // AddParamWithValue?
+                cmd.CommandText = "DELETE FROM Product WHERE ProductId = @id";
+                cmd.AddParamWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -62,8 +65,7 @@ namespace SqlIntro
         /// <param name="prod"></param>
         public void UpdateProduct(Product prod)
         {
-            //This is annoying and unnecessarily tedious for large objects.
-            //More on this in the future...  Nothing to do here..
+            
             using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
@@ -82,7 +84,7 @@ namespace SqlIntro
             using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT into product (name) values(@name)";
+                cmd.CommandText = "INSERT INTO Product (Name) values(@name)";
                 cmd.AddParamWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
             }
