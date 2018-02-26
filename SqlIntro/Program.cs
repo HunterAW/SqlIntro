@@ -48,15 +48,11 @@ namespace SqlIntro
 
                 if (Userinput == "insert")
                 {
-                    Console.WriteLine("Enter Product ID to insert.");
-                    var prodNewId = Console.ReadLine();
-
                     Console.WriteLine("Enter Product Name to insert.");
                     string prodNewName = Console.ReadLine();
 
                     product = new Product
                     {
-                        ProductID = Convert.ToInt32(Console.ReadLine()),
                         Name = prodNewName
                     };
                     repo.InsertProduct(product);
