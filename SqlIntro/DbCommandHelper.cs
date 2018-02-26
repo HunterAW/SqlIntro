@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlIntro
 {
-    public static class IDbCommandHelper
+    public static class DbCommandHelper
     {
         public static void AddParamWithValue(this IDbCommand cmd, string name, object value)
         {
