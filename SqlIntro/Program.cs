@@ -20,15 +20,33 @@ namespace SqlIntro
 
             while (!quit)
             {
-                Console.WriteLine("ShowAll, Delete, Update, Insert, Quit");
-                var Userinput = Console.ReadLine().ToLower();
+                Console.WriteLine("ShowAll, Delete, Update, Insert, LeftJoin, InnerJoin, Quit");
+                var userInput = Console.ReadLine().ToLower();
 
-                if (Userinput == "quit") 
+                if (userInput == "quit") 
                 {
                     quit = true;
                 }
 
-                if (Userinput == "showall")
+                if (userInput == "leftjoin")
+                {
+                    foreach (var prod in repo.GetProductsAndReviews())
+                    {
+                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.ProductId + "Rating: " + prod.Rating);
+                    }
+                    Console.WriteLine();
+                }
+
+                if (userInput == "innerjoin")
+                {
+                    foreach (var prod in repo.GetProductsWithReviews())
+                    {
+                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.ProductId + "Rating: " + prod.Rating);
+                    }
+                    Console.WriteLine();
+                }
+
+                if (userInput == "showall")
                 {
                     foreach (var prod in repo.GetProducts())
                     {
@@ -37,7 +55,7 @@ namespace SqlIntro
                     Console.WriteLine();
                 }
 
-                if (Userinput == "delete")
+                if (userInput == "delete")
                 {
                     Console.WriteLine("Enter Product ID to DELETE.");
                     var id = Convert.ToInt32(Console.ReadLine());
@@ -46,7 +64,7 @@ namespace SqlIntro
                     Console.WriteLine($"Deleted Product with ID {id}");
                 }
 
-                if (Userinput == "insert")
+                if (userInput == "insert")
                 {
                     Console.WriteLine("Enter Product Name to insert.");
                     string prodNewName = Console.ReadLine();
@@ -57,7 +75,7 @@ namespace SqlIntro
                     };
                     repo.InsertProduct(product);
                 }
-                if (Userinput == "update")
+                if (userInput == "update")
                 {
                     Console.WriteLine("Enter the Product ID for the name you would like to change");
                     var id = Convert.ToInt32(Console.ReadLine());

@@ -56,5 +56,27 @@ namespace SqlIntro
                 });
             }
         }
+
+        public IEnumerable<Product> GetProductsAndReviews()
+        {
+            using (var conn = _conn)
+            {
+                const string query = "select p.Name, p.ProductID, pr.Rating from product as p " +
+                    "left join productreview as pr on p.ProductID = pr.ProductID;";
+                conn.Open();
+                return conn.Query<Product>(query);
+            }
+        }
+
+        public IEnumerable<Product> GetProductsWithReviews()
+        {
+            using (var conn = _conn)
+            {
+                const string query = "select p.Name, p.ProductID, pr.Rating from product as p " +
+                    "inner join productreview as pr on p.ProductID = pr.ProductID;";
+                conn.Open();
+                return conn.Query<Product>(query);
+            }
+        }
     }
 }

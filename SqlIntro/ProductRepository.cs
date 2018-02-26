@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+using Dapper;
 
 namespace SqlIntro
 {
     public class ProductRepository : IProductRepository
-
     {
         private readonly IDbConnection _conn;
 
@@ -65,7 +58,7 @@ namespace SqlIntro
         /// <param name="prod"></param>
         public void UpdateProduct(Product prod)
         {
-            
+
             using (var conn = _conn)
             {
                 var cmd = conn.CreateCommand();
@@ -87,6 +80,40 @@ namespace SqlIntro
                 cmd.CommandText = "INSERT INTO Product (Name) values(@name)";
                 cmd.AddParamWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public IEnumerable<Product> GetProductsAndReviews()
+        {
+            using (var conn = _conn)
+            {
+                var cmd = conn.CreateCommand();
+                conn.Open();
+                cmd.CommandText = "select p.Name, p.ProductID, pr.Rating from product as p " +
+                    "left join productreview as pr on p.ProductID = pr.ProductID;";
+
+                var dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    yield return new Product
+                    {
+                        Name = dr["Name"].ToString(),
+                        ProductId = (int)dr["ProductId"],
+                        Rating = dr["ProductId"] as int? ?? 0
+                    };
+                }
+            }
+        }
+
+        public IEnumerable<Product> GetProductsWithReviews()
+        {
+            using (var conn = _conn)
+            {
+                const string query = "select p.Name, p.ProductID, pr.Rating from product as p " +
+                    "inner join productreview as pr on p.ProductID = pr.ProductID;";
+                conn.Open();
+                return conn.Query<Product>(query);
             }
         }
     }
