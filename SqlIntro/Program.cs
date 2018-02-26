@@ -32,7 +32,7 @@ namespace SqlIntro
                 {
                     foreach (var prod in repo.GetProducts())
                     {
-                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.ProductID);
+                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.ProductId);
                     }
                     Console.WriteLine();
                 }
@@ -57,14 +57,19 @@ namespace SqlIntro
                     };
                     repo.InsertProduct(product);
                 }
-                /*
                 if (Userinput == "update")
                 {
-                    Console.WriteLine("Enter new name for product .");
-                    product = Console.ReadLine();
+                    Console.WriteLine("Enter the Product ID for the name you would like to change");
+                    var id = Convert.ToInt32(Console.ReadLine());
+
+                    product = new Product { ProductId = id };
+
+                    Console.WriteLine($"Change name to what?");
+
+                    product.Name = Console.ReadLine();
+
                     repo.UpdateProduct(product);
                 }
-                */
             }
         }
     }

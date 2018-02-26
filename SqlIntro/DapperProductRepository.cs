@@ -36,9 +36,9 @@ namespace SqlIntro
             using (var conn = _conn)
             {
                 conn.Open();
-                conn.Execute("update product set name = @name where id = @id", new
+                conn.Execute("update product set name = @name where productid = @id", new
                 {
-                    id = prod.ProductID,
+                    id = prod.ProductId,
                     name = prod.Name
                 });
 
