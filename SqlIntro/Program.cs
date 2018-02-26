@@ -12,9 +12,9 @@ namespace SqlIntro
             var connectionString = ConfigurationManager.ConnectionStrings["AdventureWorks"].ConnectionString;
             var connection = new MySqlConnection(connectionString);
 
-            var repo = new ProductRepository(connection);
+            var repo = new DapperProductRepository(connection);
 
-            Product prodNew = null;
+            Product product = null;
 
             var quit = false;
 
@@ -32,7 +32,7 @@ namespace SqlIntro
                 {
                     foreach (var prod in repo.GetProducts())
                     {
-                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.Id);
+                        Console.WriteLine("Product Name:" + prod.Name + " Product ID: " + prod.ProductID);
                     }
                     Console.WriteLine();
                 }
@@ -46,13 +46,6 @@ namespace SqlIntro
                     Console.WriteLine($"Deleted Product with ID {id}");
                 }
 
-                if (Userinput == "update")
-                {
-                    Console.WriteLine("Enter Product ID to UPDATE.");
-                    var id = Convert.ToInt32(Console.ReadLine());
-                    // repo.UpdateProduct(name);
-                }
-
                 if (Userinput == "insert")
                 {
                     Console.WriteLine("Enter Product ID to insert.");
@@ -61,13 +54,21 @@ namespace SqlIntro
                     Console.WriteLine("Enter Product Name to insert.");
                     string prodNewName = Console.ReadLine();
 
-                    prodNew = new Product
+                    product = new Product
                     {
-                        Id = Convert.ToInt32(Console.ReadLine()),
+                        ProductID = Convert.ToInt32(Console.ReadLine()),
                         Name = prodNewName
                     };
-                    repo.InsertProduct(prodNew);
+                    repo.InsertProduct(product);
                 }
+                /*
+                if (Userinput == "update")
+                {
+                    Console.WriteLine("Enter new name for product .");
+                    product = Console.ReadLine();
+                    repo.UpdateProduct(product);
+                }
+                */
             }
         }
     }

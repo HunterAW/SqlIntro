@@ -5,7 +5,6 @@ using Dapper;
 namespace SqlIntro
 {
     class DapperProductRepository : IProductRepository
-
     {
         private readonly IDbConnection _conn;
 
@@ -20,7 +19,6 @@ namespace SqlIntro
             {
                 conn.Open();
                 return conn.Query<Product>("SELECT Name, ProductID FROM product");
-
             }
         }
 
@@ -35,13 +33,12 @@ namespace SqlIntro
 
         public void UpdateProduct(Product prod)
         {
-
             using (var conn = _conn)
             {
                 conn.Open();
                 conn.Execute("update product set name = @name where id = @id", new
                 {
-                    id = prod.Id,
+                    id = prod.ProductID,
                     name = prod.Name
                 });
 

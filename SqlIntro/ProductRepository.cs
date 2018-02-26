@@ -39,7 +39,7 @@ namespace SqlIntro
                     yield return new Product
                     {
                         Name = dr["Name"].ToString(),
-                        Id = int.Parse(dr["ProductId"].ToString())
+                        ProductID = int.Parse(dr["ProductId"].ToString())
                     };
                 }
             }
@@ -71,7 +71,7 @@ namespace SqlIntro
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "update product set name = @name where id = @id";
                 cmd.AddParamWithValue("@name", prod.Name);
-                cmd.AddParamWithValue("@id", prod.Id);
+                cmd.AddParamWithValue("@id", prod.ProductID);
                 cmd.ExecuteNonQuery();
             }
         }
