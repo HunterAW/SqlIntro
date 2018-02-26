@@ -13,6 +13,8 @@ namespace SqlIntro
 
             var repo = new ProductRepository(connection);
 
+            Product prodNew = null;
+
             var quit = false;
 
             while (!quit)
@@ -20,7 +22,7 @@ namespace SqlIntro
                 Console.WriteLine("ShowAll, Delete, Update, Insert, Quit");
                 var Userinput = Console.ReadLine().ToLower();
 
-                if (Userinput == "quit")
+                if (Userinput == "quit") 
                 {
                     quit = true;
                 }
@@ -29,7 +31,7 @@ namespace SqlIntro
                 {
                     foreach (var prod in repo.GetProducts())
                     {
-                        Console.WriteLine("Product Name:" + prod.Name);
+                        Console.WriteLine("Product Name:" + prod.Name + prod.Id);
                     }
                     Console.WriteLine();
                 }
@@ -41,21 +43,29 @@ namespace SqlIntro
                     repo.DeleteProduct(id);
 
                     Console.WriteLine($"Deleted Product with ID {id}");
-                    Console.WriteLine();
                 }
 
                 if (Userinput == "update")
                 {
                     Console.WriteLine("Enter Product ID to UPDATE.");
                     var id = Convert.ToInt32(Console.ReadLine());
-                    //acctions.DeleteProduct(id);
+                    // repo.UpdateProduct(name);
                 }
 
                 if (Userinput == "insert")
                 {
-                    Console.WriteLine("Enter Product ID to DELETE.");
-                    var name = Console.ReadLine();
-                    // acctions.UpdateProduct(name);
+                    Console.WriteLine("Enter Product ID to insert.");
+                    var prodNewId = Console.ReadLine();
+
+                    Console.WriteLine("Enter Product Name to insert.");
+                    string prodNewName = Console.ReadLine();
+
+                    prodNew = new Product
+                    {
+                        Id = Convert.ToInt32(Console.ReadLine()),
+                        Name = prodNewName
+                    };
+                    repo.InsertProduct(prodNew);
                 }
             }
         }
